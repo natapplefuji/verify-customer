@@ -1,0 +1,47 @@
+<div *ngIf="form" [formGroup]="form">
+    <div class="d-flex justify-content-center">
+        <p-avatar *ngIf="form.controls['imageProfile'].value" [image]="form.controls['imageProfile'].value" styleClass="mr-2"
+         shape="circle" [style]="{'width': '80px', 'height': '80px'}"></p-avatar>
+        <p-avatar *ngIf="!form.controls['imageProfile'].value" icon="pi pi-user"  styleClass="mr-2" shape="circle"
+         [style]="{'width': '80px', 'height': '80px'}"></p-avatar>
+    </div>
+    <div class="d-flex flex-column gap-2">
+        <label for="idNumber" class="text-secondary-1">เลขบัตรประชาชน *</label>
+        <input pInputText formControlName="idNumber" autocomplete="new-idNumber" placeholder="เลขบัตรประชาชน 13 หลัก"
+            [ngClass]="{'ng-invalid': form.controls['idNumber'].invalid && form.controls['idNumber'].touched}"
+            class="ng-invalid" type="text" required>
+        <small class="text-danger" *ngIf="form.controls['idNumber'].invalid && form.controls['idNumber'].touched">
+            <div *ngIf="form.controls['idNumber'].errors?.['required']">- โปรดกรอกกเลขบัตรประชาชน</div>
+        </small>
+
+    </div>
+    <div class="d-flex flex-column gap-2">
+        <label for="firstName" class="text-secondary-1">ชื่อ *</label>
+        <input pInputText formControlName="firstName" autocomplete="new-firstName"
+            [ngClass]="{'ng-invalid': form.controls['firstName'].invalid && form.controls['firstName'].touched}"
+            type="text" required>
+        <small class="text-danger" *ngIf="form.controls['firstName'].invalid && form.controls['firstName'].touched">
+            <div *ngIf="form.controls['firstName'].errors?.['required']">- โปรดกรอกชื่อ</div>
+            <div *ngIf="form.controls['firstName'].errors?.['minlength']">- ชื่อ ต้องมี 13 ตัวอักษร</div>
+        </small>
+    </div>
+    <div class="d-flex flex-column gap-2">
+        <label for="lastName" class="text-secondary-1">นามสกุล *</label>
+        <input pInputText formControlName="lastName" autocomplete="new-lastName"
+            [ngClass]="{'ng-invalid': form.controls['lastName'].invalid && form.controls['lastName'].touched}"
+            type="text" required>
+        <small class="text-danger" *ngIf="form.controls['lastName'].invalid && form.controls['lastName'].touched">
+            <div *ngIf="form.controls['lastName'].errors?.['required']">- โปรดกรอกนามสกุล</div>
+            <div *ngIf="form.controls['lastName'].errors?.['minlength']">- นามสกุล ต้องมี 13 ตัวอักษร</div>
+        </small>
+    </div>
+    <div class="d-flex flex-column gap-2">
+        <label for="birthDate" class="text-secondary-1">วันเกิด *</label>
+        <p-calendar [style]="{'width':'100%'}" [showIcon]="true" appendTo="body" formControlName="birthDate"  dateFormat="dd/mm/yy"
+            [ngClass]="{'ng-invalid': form.controls['birthDate'].invalid && form.controls['birthDate'].touched}"></p-calendar>
+        <small class="text-danger" *ngIf="form.controls['birthDate'].invalid && form.controls['birthDate'].touched">
+            <div *ngIf="form.controls['birthDate'].errors?.['required']">- โปรดกรอกกวันเกิด</div>
+
+        </small>
+    </div>
+</div>

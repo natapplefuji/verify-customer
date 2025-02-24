@@ -1,0 +1,41 @@
+$primary-color-1: #0044ff;
+$primary-color-2: #fa8c00;
+$primary-color-3: #002a66;
+$primary-color-4: #ffffff;
+
+$secondary-color-1: #5ab1e7;
+$secondary-color-2: #f55b00;
+$secondary-color-black-100: #000000;
+$secondary-color-black-80: #636363;
+$secondary-color-black-10: #a6a6a6;
+
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+
+// Define a mixin for theming
+@mixin theme-colors {
+  --primary-color-1: #{$primary-color-1};
+  --primary-color-2: #{$primary-color-2};
+  --primary-color-3: #{$primary-color-3};
+  --primary-color-4: #{$primary-color-4};
+  --secondary-color-1: #{$secondary-color-1};
+  --secondary-color-2: #{$secondary-color-2};
+  --secondary-color-black-100: #{$secondary-color-black-100};
+  --secondary-color-black-80: #{$secondary-color-black-80};
+  --secondary-color-black-10: #{$secondary-color-black-10};
+  
+  --success-color: #{$success-color};
+  --danger-color: #{$danger-color};
+  --warning-color: #{$warning-color};
+  --info-color: #{$info-color};
+  --light-color: #{$light-color};
+  --dark-color: #{$dark-color};
+}
+
+:root {
+    @include theme-colors;
+}

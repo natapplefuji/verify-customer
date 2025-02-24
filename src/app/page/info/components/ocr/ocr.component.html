@@ -1,0 +1,28 @@
+<div class="container-fluid justify-content-center mt-5">
+    <div class="col-lg-5 col-sm-10 m-auto mb-2">
+        <button class="btn btn-outline-dark" routerLink="/info">กลับหน้าหลัก</button>
+    </div>
+    <div class="card col-lg-5 col-sm-10 m-auto">
+        <div class="card-body mx-3 my-4">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <input type="file" (change)="onFileSelected($event)" accept="image/*">
+                <img *ngIf="imageUrl" [src]="imageUrl" alt="Selected Image" width="300">
+                <div class="d-flex flex-column gap-2"  *ngIf="form.controls['extractedText'].value">
+                    <label for="idNumber" class="text-secondary-1">Extract Text *</label>
+                    <div>{{form.controls['extractedText'].value}}</div>
+                    
+            
+                </div>
+                <div class="d-flex" *ngIf="form.controls['extractedText'].value">
+                    <button class="btn button-primary-1 w-100 mt-2" type="submit">Submit</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+    <p-toast></p-toast>
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+        <p style="color: white"> {{loadingMessage}} </p>
+    </ngx-spinner>
+</div>

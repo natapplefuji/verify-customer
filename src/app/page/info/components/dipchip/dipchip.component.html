@@ -1,0 +1,75 @@
+<div class="container-fluid justify-content-center my-5">
+    <div class="col-lg-5 col-sm-10 m-auto mb-2">
+        <button class="btn btn-outline-dark" routerLink="/info">กลับหน้าหลัก</button>
+    </div>
+    <div class="card col-lg-5 col-sm-10 m-auto">
+        <div class="card-body mx-3 my-4">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <ng-container *ngIf="state=='FILL_FORM'">
+                    <app-info-form [form]="form"></app-info-form>
+                    <div class="mt-4 d-flex flex-column gap-2">
+                        <button class="btn button-primary-2 w-100" type="button"
+                            (click)="onReadIDCard()">อ่านข้อมูลบัตรประชาชน</button>
+                        <button class="btn button-primary-1 w-100" type="button" (click)="nextStep()">Next Step</button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="state=='CAPTURE'">
+                    <div class="d-flex justify-content-center">
+                        <h4 class="mb-2 text-primary-3">ถ่ายรูปเพื่อยืนยันตัวตน</h4>
+                    </div>
+
+                    <video #videoElement autoplay style="width: 100%;"
+                        [ngStyle]="videoStream == null ? {'display': 'none'} : {}"></video>
+                    <canvas #canvas style="display: none;"></canvas>
+                    <img *ngIf="capturedImage" class="w-100" [src]="capturedImage" alt="Captured Image">
+                    <div class="d-flex gap-2 mt-2">
+                        <button *ngIf="!videoStream" class="btn button-primary-2 w-100" (click)="startCamera()"
+                            type="button">ถ่ายรูปใหม่</button>
+                        <button *ngIf="videoStream" class="btn button-secondary-2 w-100" (click)="captureImage()"
+                            type="button">ถ่ายภาพ</button>
+                    </div>
+                    <button *ngIf="capturedImage" class="btn button-primary-1 w-100 mt-2" type="submit">Submit</button>
+                </ng-container>
+                <ng-container *ngIf="state=='VIEW_RESULT'">
+                    <div class="d-flex justify-content-center">
+                        <div class="d-flex flex-column">
+                            <h4 class="text-success">ยืนยันตัวตนเรียบร้อย</h4>
+                            <div class="mx-auto">
+                                <p-avatar *ngIf="form.controls['imageProfile'].value"
+                                    [image]="form.controls['imageProfile'].value" class="custom-avatar" styleClass="mr-2"
+                                    shape="circle" [style]="{'width': '80px', 'height': '80px'}">
+                                </p-avatar>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                    <hr>
+                    <div class="d-flex gap-2 mt-2">
+                        <label for="idNumber" class="text-bold text-secondary-1 ">เลขบัตรประชาชน :</label>
+                        <label>{{form.get('idNumber')?.value}}</label>
+
+                    </div>
+                    <div class="d-flex gap-2">
+                        <label for="firstName" class="text-bold text-secondary-1 ">ชื่อ :</label>
+                        <label>{{form.get('firstName')?.value}}</label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <label for="lastName" class="text-bold text-secondary-1 ">นามสกุล :</label>
+                        <label>{{form.get('lastName')?.value}}</label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <label for="lastName" class="text-bold text-secondary-1 ">วันเกิด :</label>
+                        <label>{{form.get('birthDate')?.value | date: 'dd/MM/yyyy'}}</label>
+                    </div>
+                </ng-container>
+
+            </form>
+        </div>
+
+    </div>
+    <p-toast></p-toast>
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+        <p style="color: white"> {{loadingMessage}} </p>
+    </ngx-spinner>
+</div>

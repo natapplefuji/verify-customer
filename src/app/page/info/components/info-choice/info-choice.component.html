@@ -1,0 +1,39 @@
+<div class="container-fluid d-flex justify-content-center mt-5">
+    <div class="d-flex flex-wrap flex-row justify-content-center " style="gap: 5rem;">
+        <div class="mb-2" >
+            <p-card class="card" header="ยืนยันตัวตนด้วยบัตรประชาชน"   [style]="{ width: '360px' }">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="assets/images/thaiIdBanner.jpg" />
+                </ng-template>
+                <p>
+                    ยืนยันตัวตนด้วยบัตรประชาชน
+                </p>
+                <ng-template pTemplate="footer">
+                    <div class="flex gap-3 mt-1">
+                        <div><button class="btn w-100 btn-block button-primary-2"  routerLink="/info/dipchip">Select</button></div>
+                        <!-- <p-button label="Cancel" severity="secondary" class="w-full" styleClass="w-full" />
+                        <p-button label="Save" class="w-full" styleClass="w-full" /> -->
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
+        <div>
+            <p-card class="card" header="ยืนยันตัวตนด้วย Passport"   [style]="{ width: '360px' }">
+                <ng-template pTemplate="header">
+                    <img alt="Card" src="assets/images/passportBanner.jpg" />
+                </ng-template>
+                <p>
+                    ยืนยันตัวตนด้วย Passport
+                </p>
+                <ng-template pTemplate="footer">
+                    <div class="flex gap-3 mt-1">
+                        <div><button class="btn w-100 btn-block button-primary-2" routerLink="/info/ocr">Select</button></div>
+                        
+                        <!-- <p-button label="Cancel" severity="secondary" class="w-full" styleClass="w-full" />
+                        <p-button label="Save" class="w-full" styleClass="w-full" /> -->
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
+    </div>
+</div>

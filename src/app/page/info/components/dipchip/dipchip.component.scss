@@ -1,0 +1,21 @@
+.custom-avatar {
+    position: relative;
+    display: inline-block;
+    border-color: var(--success-color);
+}
+
+.custom-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(50%, 50%);
+    background-color: green !important; /* Ensures green color */
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
