@@ -12,6 +12,9 @@ import { InfoFormComponent } from './components/info-form/info-form.component';
 import { OcrComponent } from './components/ocr/ocr.component';
 import { DipchipComponent } from './components/dipchip/dipchip.component';
 import { MessageService } from 'primeng/api';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UploadIdCardModalComponent } from './components/upload-id-card-modal/upload-id-card-modal.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -21,15 +24,18 @@ import { MessageService } from 'primeng/api';
     InfoChoiceComponent,
     InfoFormComponent,
     OcrComponent,
-    DipchipComponent
+    DipchipComponent,
+    UploadIdCardModalComponent
   ],
   imports: [
     CommonModule,
+    NgbModule,
     InfoRoutingModule,
     ReactiveFormsModule,
     FormsModule,
     PrimeNgModule,
     NgxSpinnerModule,
+    FontAwesomeModule
   ],
   providers: [MessageService]
 })

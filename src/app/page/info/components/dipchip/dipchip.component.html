@@ -1,4 +1,4 @@
-<div class="container-fluid justify-content-center my-5">
+<div class="container-fluid justify-content-center my-2">
     <div class="col-lg-5 col-sm-10 m-auto mb-2">
         <button class="btn btn-outline-dark" routerLink="/info">กลับหน้าหลัก</button>
     </div>
@@ -9,8 +9,10 @@
                     <app-info-form [form]="form"></app-info-form>
                     <div class="mt-4 d-flex flex-column gap-2">
                         <button class="btn button-primary-2 w-100" type="button"
-                            (click)="onReadIDCard()">อ่านข้อมูลบัตรประชาชน</button>
-                        <button class="btn button-primary-1 w-100" type="button" (click)="nextStep()">Next Step</button>
+                            (click)="onReadIDCard()"><fa-icon [icon]="faAddressCard" class="me-2"></fa-icon> อ่านข้อมูลบัตรประชาชน</button>
+                            <button class="btn button-primary-2 w-100" type="button"
+                            (click)="openUploadIdCardModal()"><fa-icon [icon]="faUpload" class="me-2"></fa-icon> Upload บัตรประชาชน</button>    
+                        <button class="btn button-primary-1 w-100" type="button" (click)="nextStep()" [disabled]="form.invalid">Next Step</button>
                     </div>
                 </ng-container>
                 <ng-container *ngIf="state=='CAPTURE'">

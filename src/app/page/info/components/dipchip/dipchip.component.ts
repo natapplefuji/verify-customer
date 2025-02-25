@@ -1,27 +1,32 @@
+import { faAddressCard, faUpload } from '@fortawesome/free-solid-svg-icons';
 import { BackendService } from './../../../../service/backend.service';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { SubmitRequest, VerifyRequest } from 'src/app/models/info.model';
 import { DipchipService } from 'src/app/service/dipchip.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UploadIdCardModalComponent } from '../upload-id-card-modal/upload-id-card-modal.component';
 
 @Component({
   selector: 'app-dipchip',
   templateUrl: './dipchip.component.html',
   styleUrls: ['./dipchip.component.scss']
 })
-export class DipchipComponent implements OnInit {
+export class DipchipComponent implements OnInit, OnDestroy {
   verificationResult = null;
   loadingMessage = '';
+  public faAddressCard = faAddressCard;
+  public faUpload = faUpload;
   form = this.fb.group({
     idNumber: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     birthDate: ['', [Validators.required]],
     address: [''],
-    imageProfile: ['', [Validators.required]],
+    imageProfile: [''],
   });
   @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
   @ViewChild('canvas', { static: false }) canvas!: ElementRef;
@@ -33,9 +38,13 @@ export class DipchipComponent implements OnInit {
     private dipchipService: DipchipService,
     private backendService: BackendService,
     private messageService: MessageService,
+    private modalService: NgbModal,
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
+  }
+  ngOnDestroy(): void {
+    this.stopCamera();
   }
   onSubmit() {
     if (this.form.invalid) {
@@ -54,14 +63,13 @@ export class DipchipComponent implements OnInit {
     this.spinner.show();
     this.loadingMessage = "กำลังเรียกไปที่ API";
     this.backendService.submitCard(request).subscribe(response => {
+      console.log(response);
+      this.loadingMessage = response.message;
       setTimeout(() => {
-        this.loadingMessage = response.message;
-        setTimeout(() => {
-          this.spinner.hide();
-          this.verificationResult = response.data;
-          this.setForm(this.verificationResult);
-          this.state = 'VIEW_RESULT';
-        }, 3000);
+        this.spinner.hide();
+        this.verificationResult = response.data;
+        this.setForm(this.verificationResult);
+        this.state = 'VIEW_RESULT';
       }, 3000);
     }, (error) => {
       this.spinner.hide();
@@ -73,14 +81,38 @@ export class DipchipComponent implements OnInit {
     this.spinner.show();
     this.loadingMessage = "กำลังอ่านบัตรประชาชน";
     this.backendService.readCard().subscribe(response => {
+      this.loadingMessage = response.message;
       setTimeout(() => {
-        this.loadingMessage = response.message;
-        setTimeout(() => {
-          this.spinner.hide();
-          this.verificationResult = response.data;
-          this.setForm(this.verificationResult);
-        }, 2000);
+        this.spinner.hide();
+        this.verificationResult = response.data;
+        this.setForm(this.verificationResult);
       }, 2000);
+    },(error) => {
+      this.spinner.hide();
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'ไม่สามารถยืนยันบัตรประชาชนได้' });
+    });
+  }
+  openUploadIdCardModal() {
+    const modalERApprove = this.modalService.open(UploadIdCardModalComponent, { backdrop: 'static' });
+    modalERApprove.result.then((result) => {
+      if (result?.confirm) {
+        if (result.data) {
+          this.spinner.show();
+          this.loadingMessage = "กำลังประมวผลข้อความ";
+          this.backendService.readText(result.data).subscribe(response => {
+            this.loadingMessage = response.message;
+            setTimeout(() => {
+              this.spinner.hide();
+              this.verificationResult = response.data;
+              this.setForm(this.verificationResult);
+            }, 2000);
+          },(error) => {
+            this.spinner.hide();
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'ไม่สามารถยืนยันบัตรประชาชนได้' });
+          });
+        }
+
+      }
     });
   }
   verifyIdCard(request: VerifyRequest) {
@@ -91,11 +123,13 @@ export class DipchipComponent implements OnInit {
         this.loadingMessage = response.message;
         setTimeout(() => {
           this.spinner.hide();
+          this.verificationResult = response.data;
+          this.setForm(this.verificationResult);
           this.state = 'CAPTURE';
           this.startCamera();
         }, 3000);
       }, 3000);
-    },(error)=>{
+    }, (error) => {
       this.spinner.hide();
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'ไม่สามารถยืนยันบัตรประชาชนได้' });
     });
@@ -111,8 +145,7 @@ export class DipchipComponent implements OnInit {
       id_number: this.form.value.idNumber,
       first_name: this.form.value.firstName,
       last_name: this.form.value.lastName,
-      birth_date: this.form.value.birthDate,
-      image_url: this.form.value.imageProfile,
+      birth_date: this.form.value.birthDate
     }
     this.verifyIdCard(request);
   }

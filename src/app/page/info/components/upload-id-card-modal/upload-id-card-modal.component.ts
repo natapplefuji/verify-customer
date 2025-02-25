@@ -1,33 +1,40 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { BackendService } from 'src/app/service/backend.service';
 import * as Tesseract from 'tesseract.js';
-
 @Component({
-  selector: 'app-ocr',
-  templateUrl: './ocr.component.html',
-  styleUrls: ['./ocr.component.scss']
+  selector: 'app-upload-id-card-modal',
+  templateUrl: './upload-id-card-modal.component.html',
+  styleUrls: ['./upload-id-card-modal.component.scss']
 })
-export class OcrComponent implements OnInit {
-  loadingMessage = '';
+export class UploadIdCardModalComponent implements OnInit {
   imageUrl: string | ArrayBuffer | null = null;
   form = this.fb.group({
     extractedText: ['', [Validators.required]],
   });
   constructor(
     private spinner: NgxSpinnerService,
-        private backendService: BackendService,
-        private messageService: MessageService,
-        private fb: FormBuilder
+    private messageService: MessageService,
+    private fb: FormBuilder,
+    private activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void {
   }
-  onSubmit() {
+  confirm() {
+    if (this.form.valid) {
+      this.activeModal.close({ confirm: true, data: this.form.controls['extractedText'].value });
+    } else {
+      console.log(this.form);
 
+      this.form.markAllAsTouched();
+    }
+  }
+  cancel(): void {
+    this.activeModal.close({ confirm: false });
   }
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -61,6 +68,5 @@ export class OcrComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to extract text.' });
     }
   }
-  
 
 }

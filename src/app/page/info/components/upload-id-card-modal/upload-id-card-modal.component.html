@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h4 class="modal-title">Upload ID Card</h4>
+</div>
+<div class="modal-body">
+    <form [formGroup]="form">
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        <img *ngIf="imageUrl" [src]="imageUrl" alt="Selected Image" width="300">
+        <div class="d-flex flex-column gap-2"  *ngIf="form.controls['extractedText'].value">
+            <label for="idNumber" class="text-secondary-1">Extract Text *</label>
+            <div>{{form.controls['extractedText'].value}}</div>
+            
+    
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn button-primary-1" (click)="confirm()">Confirm</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+</div>

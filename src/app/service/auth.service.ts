@@ -17,16 +17,14 @@ export class AuthService {
   authenticate(username: string, password: string): Observable<string> {
     console.log('Encrypted username:', username);
     console.log('Encrypted password:', password);
-    let decryptedUsername = this.encryptionService.decrypt(username);
-    let decryptedPassword = this.encryptionService.decrypt(password);
-    console.log('Decrypted username:', decryptedUsername);
-    console.log('Decrypted password:', decryptedPassword);
-    if (decryptedUsername === 'nat@example.com' && decryptedPassword === 'Password@123') {
+    const rightUsername = this.encryptionService.decrypt(username);
+    const rightPassword = this.encryptionService.decrypt(password);
+    if (rightUsername === 'nat@example.com' && rightPassword === 'Password@123') {
       const fakeToken = 'mocked-jwt-token';
       return new Observable(observer => {
         sessionStorage.setItem(this.tokenKey, fakeToken);
         let userProfileResult: UserProfile = new UserProfile({
-          userName: decryptedUsername,
+          userName: rightUsername,
           imageUrl: 'https://www.w3.org/thumbnails/200/avatar-images/7mtpjeh4in8kw04ksso8ss4ocsksswo.webp'
         });
         this.userProfileSubject.next(userProfileResult);
