@@ -162,6 +162,8 @@ export class DipchipComponent implements OnInit, OnDestroy {
   }
 
   startCamera() {
+    this.videoStream = null;
+    this.capturedImage = null;
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
         this.videoStream = stream;
